@@ -6,6 +6,7 @@ Salt ist in der Datenbank unverschlüsselt gespeichert und wird nur genutzt, dam
 Pepper wird genau wie der Salt mit in die Hashfunktion gegeben, wird allerdings im Gegensatz zum Salt nicht in der Datenbank gespeichert, sondern beispielsweise im geschützten TPM-Chip.
 
 ## Hashcat
+Modes: (https://hashcat.net/wiki/doku.php?id=hashcat)[https://hashcat.net/wiki/doku.php?id=hashcat]
 
 `hashcat -m 11600 [hash-file] [wordlist] -r [*.rule]`
 
