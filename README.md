@@ -6,13 +6,24 @@ Salt ist in der Datenbank unverschlüsselt gespeichert und wird nur genutzt, dam
 Pepper wird genau wie der Salt mit in die Hashfunktion gegeben, wird allerdings im Gegensatz zum Salt nicht in der Datenbank gespeichert, sondern beispielsweise im geschützten TPM-Chip.
 
 ## Hashcat
-Modes: (https://hashcat.net/wiki/doku.php?id=hashcat)[https://hashcat.net/wiki/doku.php?id=hashcat]
+Modes: [https://hashcat.net/wiki/doku.php?id=hashcat](https://hashcat.net/wiki/doku.php?id=hashcat)
 
 `hashcat -m 11600 [hash-file] [wordlist] -r [*.rule]`
 
 Ohne -m detektiert hashcat den Hash, wenn bereinigt. Ohne -r probiert er einfach alle Words durch.
 
 Mit --show wird nur ein bisheriges Ergebnis angezeigt, kein neuer Run gestartet.
+
+### Verschiedene Kombinationen
+Angabe mit `-a [nummer]`:
+ # | Mode
+ ===+======
+  0 | Straight
+  1 | Combination
+  3 | Brute-force
+  6 | Hybrid Wordlist + Mask
+  7 | Hybrid Mask + Wordlist
+  9 | Association
 
 ### Hash detektieren
 `hashcat [hash-file]` gibt den Hash-Algorithmus mit der Hashcat-Modus-Nummer heraus.
