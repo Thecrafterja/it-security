@@ -16,8 +16,6 @@ Mit --show wird nur ein bisheriges Ergebnis angezeigt, kein neuer Run gestartet.
 
 ### Verschiedene Kombinationen
 Angabe mit `-a [nummer]`:
- # | Mode
- ===+======
   0 | Straight
   1 | Combination
   3 | Brute-force
