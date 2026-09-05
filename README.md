@@ -65,3 +65,51 @@ Feste Begriffe lassen sich direkt in die Maske schreiben. `Sommer?d?d?d?d` probi
 Hierbei immer am Anfang den Dateinamen und den ersten Doppelpunkt entfernen, wenn der Hash mit hashcat verarbeitet werden soll. Manche Hashes (wie z. B. bei LibreOffice) müssen am Ende noch `:::::xyz` entfernt kriegen.
 
 Wenn zwei Modi für einen Dateityp vorhanden sind, hilft es meistens, beide zu probieren. Wenn wie bei ODF unterschiedliche Hash-Algorithmen zu Grunde liegen, bricht Hashcat bei dem Falschen automatisch ab, da die Hash-Länge hier nicht übereinstimmt.
+
+## Skript für Keepass v4
+```python
+#!/usr/bin/env python3
+"""
+Probiert jedes Wort aus einer Wortliste als Passwort für eine .kdbx-Datei.
+Benötigt: pip install pykeepass
+"""
+
+import sys
+from pykeepass import PyKeePass
+from pykeepass.exceptions import CredentialsError
+
+def try_passwords(kdbx_path, wordlist_path, keyfile=None):
+    with open(wordlist_path, "r", encoding="utf-8", errors="ignore") as f:
+        words = [line.rstrip("\n\r") for line in f if line.strip()]
+
+    total = len(words)
+    print(f"[*] {total} Passwörter werden getestet...")
+
+    for i, pw in enumerate(words, 1):
+        try:
+            PyKeePass(kdbx_path, password=pw, keyfile=keyfile)
+            print(f"\n[+] Passwort gefunden: {pw!r}")
+            return pw
+        except CredentialsError:
+            pass
+        except Exception as e:
+            print(f"[!] Unerwarteter Fehler bei {pw!r}: {e}")
+
+        if i % 50 == 0 or i == total:
+            print(f"    ... {i}/{total} probiert", end="\r")
+
+    print("\n[-] Kein passendes Passwort in der Liste gefunden.")
+    return None
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print(f"Nutzung: {sys.argv[0]} <datei.kdbx> <wortliste.txt> [keyfile]")
+        sys.exit(1)
+
+    kdbx_file = sys.argv[1]
+    wordlist_file = sys.argv[2]
+    key_file = sys.argv[3] if len(sys.argv) > 3 else None
+
+    try_passwords(kdbx_file, wordlist_file, key_file)
+```
