@@ -64,6 +64,8 @@ Feste Begriffe lassen sich direkt in die Maske schreiben. `Sommer?d?d?d?d` probi
 ## 2john-Tools
 Hierbei immer am Anfang den Dateinamen und den ersten Doppelpunkt entfernen, wenn der Hash mit hashcat verarbeitet werden soll. Manche Hashes (wie z. B. bei LibreOffice) müssen am Ende noch `:::::xyz` entfernt kriegen.
 
+Entfernen am Anfang: `sed -i -E "s/^[^:]+://" max.hash`
+
 Wenn zwei Modi für einen Dateityp vorhanden sind, hilft es meistens, beide zu probieren. Wenn wie bei ODF unterschiedliche Hash-Algorithmen zu Grunde liegen, bricht Hashcat bei dem Falschen automatisch ab, da die Hash-Länge hier nicht übereinstimmt.
 
 ## Skript für Keepass v4
