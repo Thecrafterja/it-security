@@ -16,12 +16,12 @@ Mit --show wird nur ein bisheriges Ergebnis angezeigt, kein neuer Run gestartet.
 
 ### Verschiedene Kombinationen
 Angabe mit `-a [nummer]`:
-  0 | Straight
-  1 | Combination
-  3 | Brute-force
-  6 | Hybrid Wordlist + Mask
-  7 | Hybrid Mask + Wordlist
-  9 | Association
+  0: Straight
+  1: Combination
+  3: Brute-force
+  6: Hybrid Wordlist + Mask
+  7: Hybrid Mask + Wordlist
+  9: Association
 
 ### Hash detektieren
 `hashcat [hash-file]` gibt den Hash-Algorithmus mit der Hashcat-Modus-Nummer heraus.
