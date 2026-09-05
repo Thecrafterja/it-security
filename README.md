@@ -28,6 +28,39 @@ Nummer|Beschreibung
 ### Hash detektieren
 `hashcat [hash-file]` gibt den Hash-Algorithmus mit der Hashcat-Modus-Nummer heraus.
 
+### Masking in Hashcat
+
+Beim Masking (Angriffsmodus `-a 3`) generiert Hashcat Passwörter nach einem exakt vorgegebenen Muster. Statt alle Kombinationen blind durchzuprobieren, definieren Sie für jede Position des Passworts die erlaubte Zeichengruppe. Das verkleinert den Suchraum im Vergleich zu reinem Brute-Force enorm.
+
+### Standard-Platzhalter (Built-in Charsets)
+
+| Platzhalter | Zeichenklasse | Enthaltene Zeichen |
+|---|---|---|
+| `?l` | Kleinbuchstaben | `a-z` |
+| `?u` | Großbuchstaben | `A-Z` |
+| `?d` | Ziffern | `0-9` |
+| `?s` | Sonderzeichen | `` !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ `` |
+| `?a` | Alle Zeichen | Kombination aus `?l`, `?u`, `?d`, `?s` |
+| `?b` | Bytes | `0x00 - 0xff` (alle 256 Bytewerte) |
+
+---
+
+### Funktionsweise am Beispiel
+
+Für ein vermutetes Passwort nach dem Schema `Sommer2024!` (Großbuchstabe, 5 Kleinbuchstaben, 4 Ziffern, Sonderzeichen):
+
+* **Maske:** `?u?l?l?l?l?l?d?d?d?d?s`
+* **Befehl:** `hashcat -a 3 -m [HASH_TYP] hash.txt ?u?l?l?l?l?l?d?d?d?d?s`
+
+Feste Begriffe lassen sich direkt in die Maske schreiben. `Sommer?d?d?d?d` probiert beispielsweise nur das Wort "Sommer" kombiniert mit vier beliebigen Zahlen aus.
+
+### Benutzerdefinierte Zeichensätze (Custom Charsets)
+
+Über die Parameter `-1` bis `-4` können eigene Zeichengruppen definiert werden:
+
+* **Szenario:** 4 Hexadezimalzeichen gefolgt von 2 Ziffern
+* **Befehl:** `hashcat -a 3 -m 0 -1 0123456789abcdef hash.txt ?1?1?1?1?d?d`
+
 ## 2john-Tools
 Hierbei immer am Anfang den Dateinamen und den ersten Doppelpunkt entfernen, wenn der Hash mit hashcat verarbeitet werden soll. Manche Hashes (wie z. B. bei LibreOffice) müssen am Ende noch `:::::xyz` entfernt kriegen.
 
